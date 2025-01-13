@@ -184,7 +184,7 @@
 
             .left-column {
                 width: 100%;
-                background-image: none;
+                background-image: none; /* Oculta la imagen */
             }
 
             .right-column {
@@ -206,9 +206,9 @@
             }
 
             .video-container {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 16 / 9;
+                width: 90%;
+                max-width: 320px;
+                aspect-ratio: 16 / 9; /* Mantiene la proporción del video */
             }
         }
 
@@ -222,8 +222,8 @@
             }
 
             .video-container {
-                width: 100%;
-                height: auto;
+                max-width: auto;
+                width: 30%;
                 aspect-ratio: 16 / 9;
             }
         }
@@ -288,6 +288,8 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtubeVideo', {
+                height: '720',
+                width: '1280',
                 videoId: 'dSDPTrKegNs',
                 playerVars: {
                     autoplay: 1,
@@ -295,8 +297,18 @@
                     rel: 0,
                     showinfo: 0,
                     mute: 0
+                },
+                events: {
+                    onReady: onPlayerReady
                 }
             });
+        }
+
+        function onPlayerReady(event) {
+            setTimeout(() => {
+                document.getElementById('videoPopup').style.display = 'flex';
+                event.target.playVideo();
+            }, 1000);
         }
 
         function closeVideo() {
@@ -306,24 +318,6 @@
                 player.stopVideo();
             }
         }
-
-        function adjustVideoSize() {
-            const videoContainer = document.querySelector('.video-container');
-            const popup = document.querySelector('.video-popup');
-            const isMobile = window.innerWidth <= 768;
-
-            if (isMobile) {
-                videoContainer.style.width = '100%';
-                videoContainer.style.height = `${window.innerWidth * 0.5625}px`; // Proporción 16:9
-                popup.style.display = 'flex';
-            } else {
-                videoContainer.style.width = '90%';
-                videoContainer.style.height = 'auto';
-            }
-        }
-
-        window.addEventListener('resize', adjustVideoSize);
-        document.addEventListener('DOMContentLoaded', adjustVideoSize);
 
         loadYouTubeAPI();
     </script>
