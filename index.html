@@ -184,7 +184,7 @@
 
             .left-column {
                 width: 100%;
-                background-image: none; /* Oculta la imagen */
+                background-image: none;
             }
 
             .right-column {
@@ -206,9 +206,9 @@
             }
 
             .video-container {
-                width: 90%;
-                max-width: 160px; /* Mitad del tamaño actual */
-                aspect-ratio: 16 / 9; /* Mantiene la proporción del video */
+                width: 100%;
+                height: auto;
+                aspect-ratio: auto;
             }
         }
 
@@ -222,9 +222,9 @@
             }
 
             .video-container {
-                max-width: 140px; /* Ajuste a mitad del tamaño */
                 width: 100%;
-                aspect-ratio: 16 / 9;
+                height: auto;
+                aspect-ratio: auto;
             }
         }
     </style>
@@ -288,8 +288,6 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtubeVideo', {
-                height: '720',
-                width: '1280',
                 videoId: 'dSDPTrKegNs',
                 playerVars: {
                     autoplay: 1,
@@ -297,18 +295,8 @@
                     rel: 0,
                     showinfo: 0,
                     mute: 0
-                },
-                events: {
-                    onReady: onPlayerReady
                 }
             });
-        }
-
-        function onPlayerReady(event) {
-            setTimeout(() => {
-                document.getElementById('videoPopup').style.display = 'flex';
-                event.target.playVideo();
-            }, 1000);
         }
 
         function closeVideo() {
