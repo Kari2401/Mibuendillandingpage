@@ -137,7 +137,12 @@
                 flex-direction: column;
             }
 
-            .left-column, .right-column {
+            .left-column {
+                width: 100%;
+                background-image: none; /* Oculta la imagen de fondo */
+            }
+
+            .right-column {
                 width: 100%;
             }
 
@@ -197,6 +202,29 @@
             </div>
         </div>
     </div>
+
+    <div id="videoPopup" class="video-popup">
+        <div class="video-container">
+            <button class="close-video" onclick="closeVideo()">×</button>
+            <iframe id="youtubeVideo" src="https://www.youtube.com/embed/dSDPTrKegNs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        function showConfirmationMessage(event) {
+            event.preventDefault();
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.style.display = 'block';
+            setTimeout(() => {
+                event.target.submit();
+            }, 2000);
+        }
+
+        function closeVideo() {
+            const popup = document.getElementById('videoPopup');
+            popup.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
 
