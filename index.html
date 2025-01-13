@@ -98,9 +98,9 @@
         .form-container button {
             font-size: 21.5px;
             padding: 12px;
-            width: 60%; /* Reduce el ancho al 60% del original */
-            max-width: 300px; /* Mantén un ancho máximo */
-            margin: 0 auto; /* Centra el botón */
+            width: 60%;
+            max-width: 300px;
+            margin: 0 auto;
             border-radius: 5px;
             background-color: #E6B54A;
             color: white;
@@ -126,51 +126,44 @@
             font-size: 18px;
         }
 
-        .video-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
-        .video-container {
-            position: relative;
-            width: 80%;
-            max-width: 1120px;
+        @media screen and (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-column, .right-column {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+
+            .demo-button {
+                width: 100%;
+                font-size: 18px;
+            }
         }
 
-        .close-video {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            width: 40px;
-            height: 40px;
-            background-color: #E6B54A;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-        }
+        @media screen and (max-width: 480px) {
+            .form-container h2 {
+                font-size: 24px;
+            }
 
-        .close-video:hover {
-            background-color: #d0a04a;
-        }
-
-        .video-iframe, #youtubeVideo {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border: none;
+            .hero h1 {
+                font-size: 24px;
+            }
         }
     </style>
 </head>
@@ -204,63 +197,6 @@
             </div>
         </div>
     </div>
-
-    <div id="videoPopup" class="video-popup">
-        <div class="video-container">
-            <button class="close-video" onclick="closeVideo()">×</button>
-            <div id="youtubeVideo"></div>
-        </div>
-    </div>
-
-    <script>
-        function showConfirmationMessage(event) {
-            // Detener el envío del formulario para que se pueda mostrar el mensaje
-            event.preventDefault();
-
-            // Mostrar el mensaje de confirmación
-            const confirmationMessage = document.getElementById('confirmationMessage');
-            confirmationMessage.style.display = 'block';
-
-            // Opcional: enviar el formulario después de mostrar el mensaje
-            setTimeout(() => {
-                event.target.submit();
-            }, 2000); // Enviar después de 2 segundos
-        }
-
-        // Funciones para cargar videos (sin cambios)
-        function loadYouTubeAPI() {
-            const tag = document.createElement('script');
-            tag.src = 'https://www.youtube.com/iframe_api';
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        }
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtubeVideo', {
-                height: '100%',
-                width: '100%',
-                videoId: 'dSDPTrKegNs',
-                playerVars: { 'autoplay': 1, 'controls': 1, 'rel': 0, 'showinfo': 0, 'mute': 0 },
-                events: { 'onReady': onPlayerReady }
-            });
-        }
-
-        function onPlayerReady(event) {
-            setTimeout(() => {
-                document.getElementById('videoPopup').style.display = 'flex';
-                event.target.playVideo();
-            }, 1000);
-        }
-
-        function closeVideo() {
-            const popup = document.getElementById('videoPopup');
-            popup.style.display = 'none';
-            if (player && typeof player.stopVideo === 'function') {
-                player.stopVideo();
-            }
-        }
-
-        loadYouTubeAPI();
-    </script>
 </body>
 </html>
+
