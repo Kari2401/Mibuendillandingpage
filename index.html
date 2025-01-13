@@ -5,35 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiBuendil Landing Page</title>
 
-    <!-- Google Analytics -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZJHGF768M"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+        gtag('config', 'G-GZJHGF768M');
 
-        gtag('config', 'G-GZJHGF768M', {
-            'page_title': 'MiBuendil Landing',
-            'custom_map': {
-                'dimension1': 'form_submissions',
-                'dimension2': 'video_views'
-            }
-        });
-
-        // Función para trackear envío de formulario
+        // Funciones para tracking de eventos
         function trackFormSubmission() {
-            gtag('event', 'form_submission', {
-                'event_category': 'engagement',
-                'event_label': 'landing_form'
-            });
+            gtag('event', 'form_submission');
         }
 
-        // Función para trackear reproducción de video
         function trackVideoPlay() {
-            gtag('event', 'video_play', {
-                'event_category': 'engagement',
-                'event_label': 'youtube_video'
-            });
+            gtag('event', 'video_play');
+        }
+
+        function trackDemoClick() {
+            gtag('event', 'demo_click');
         }
     </script>
 
@@ -323,14 +313,6 @@
     </div>
 
     <script>
-        // Trackear clic en el botón de demo
-        function trackDemoClick() {
-            gtag('event', 'demo_click', {
-                'event_category': 'engagement',
-                'event_label': 'demo_button'
-            });
-        }
-
         function showConfirmationMessage(event) {
             event.preventDefault();
             const confirmationMessage = document.getElementById('confirmationMessage');
