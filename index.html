@@ -132,6 +132,47 @@
             display: block;
         }
 
+        .video-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-container {
+            position: relative;
+            width: 80%;
+            max-width: 1120px;
+        }
+
+        .close-video {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            width: 40px;
+            height: 40px;
+            background-color: #E6B54A;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .close-video:hover {
+            background-color: #d0a04a;
+        }
+
         @media screen and (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -139,7 +180,7 @@
 
             .left-column {
                 width: 100%;
-                background-image: none; /* Oculta la imagen de fondo */
+                background-image: none; /* Oculta la imagen */
             }
 
             .right-column {
@@ -206,7 +247,7 @@
     <div id="videoPopup" class="video-popup">
         <div class="video-container">
             <button class="close-video" onclick="closeVideo()">×</button>
-            <iframe id="youtubeVideo" src="https://www.youtube.com/embed/dSDPTrKegNs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <div id="youtubeVideo"></div>
         </div>
     </div>
 
@@ -220,11 +261,49 @@
             }, 2000);
         }
 
+        function loadYouTubeAPI() {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        let player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtubeVideo', {
+                height: '100%',
+                width: '100%',
+                videoId: 'dSDPTrKegNs',
+                playerVars: {
+                    autoplay: 1,
+                    controls: 1,
+                    rel: 0,
+                    showinfo: 0,
+                    mute: 0
+                },
+                events: {
+                    onReady: onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            setTimeout(() => {
+                document.getElementById('videoPopup').style.display = 'flex';
+                event.target.playVideo();
+            }, 1000);
+        }
+
         function closeVideo() {
             const popup = document.getElementById('videoPopup');
             popup.style.display = 'none';
+            if (player && typeof player.stopVideo === 'function') {
+                player.stopVideo();
+            }
         }
+
+        loadYouTubeAPI();
     </script>
 </body>
 </html>
-
