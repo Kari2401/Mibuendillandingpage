@@ -135,26 +135,31 @@
         .video-popup {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 90%;
-            max-height: 80vh;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             justify-content: center;
             align-items: center;
             padding: 20px;
             box-sizing: border-box;
-            border-radius: 10px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 90%;
+            max-width: 1280px;
+            margin: auto;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         .video-container {
             position: relative;
-            width: 90%;
-            max-width: 1280px;
-            background: #000;
-            overflow: hidden;
+            width: 100%;
             padding-top: 56.25%; /* 16:9 Aspect Ratio */
         }
 
@@ -289,9 +294,11 @@
     </div>
 
     <div id="videoPopup" class="video-popup">
-        <div class="video-container">
-            <button class="close-video" onclick="closeVideo()">×</button>
-            <div id="youtubeVideo"></div>
+        <div class="video-wrapper">
+            <div class="video-container">
+                <button class="close-video" onclick="closeVideo()">×</button>
+                <div id="youtubeVideo"></div>
+            </div>
         </div>
     </div>
 
@@ -315,12 +322,9 @@
         let player;
 
         function onYouTubeIframeAPIReady() {
-            const videoWidth = window.innerWidth <= 768 ? '100%' : '1280';
-            const videoHeight = window.innerWidth <= 768 ? '100%' : '720';
-            
             player = new YT.Player('youtubeVideo', {
-                width: videoWidth,
-                height: videoHeight,
+                width: '100%',
+                height: '100%',
                 videoId: 'dSDPTrKegNs',
                 playerVars: {
                     autoplay: 1,
