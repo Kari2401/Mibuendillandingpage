@@ -8,23 +8,10 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZJHGF768M"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-GZJHGF768M');
-
-        // Funciones para tracking de eventos
-        function trackFormSubmission() {
-            gtag('event', 'form_submission');
-        }
-
-        function trackVideoPlay() {
-            gtag('event', 'video_play');
-        }
-
-        function trackDemoClick() {
-            gtag('event', 'demo_click');
-        }
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-GZJHGF768M');
     </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -288,7 +275,7 @@
 
         <div class="right-column">
             <div class="form-container">
-                <a href="https://www.mibuendil.com/" class="demo-button" onclick="trackDemoClick()">Revisa nuestra demo</a>
+                <a href="https://www.mibuendil.com/" class="demo-button">Revisa nuestra demo</a>
                 <div class="form-title">
                     <h2>Regístrate para mayor información y obtener beneficios</h2>
                 </div>
@@ -317,7 +304,6 @@
             event.preventDefault();
             const confirmationMessage = document.getElementById('confirmationMessage');
             confirmationMessage.style.display = 'block';
-            trackFormSubmission();
             setTimeout(() => {
                 event.target.submit();
             }, 2000);
@@ -361,7 +347,7 @@
 
         function onPlayerStateChange(event) {
             if (event.data == YT.PlayerState.PLAYING) {
-                trackVideoPlay();
+                // Video started playing
             }
         }
 
