@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiBuendil Landing Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -118,6 +117,14 @@
             background-color: #d0a04a;
         }
 
+        .confirmation-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #FFFFFF;
+            font-size: 18px;
+        }
+
         .video-popup {
             display: none;
             position: fixed;
@@ -129,8 +136,6 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            padding: 10px;
-            box-sizing: border-box;
         }
 
         .video-container {
@@ -138,14 +143,21 @@
             width: 90%;
             max-width: 1280px;
             background: #000;
-            display: flex;
-            justify-content: center;
+        }
+
+        .video-container::before {
+            content: '';
+            display: block;
+            padding-top: 56.25%; /* Proporción 16:9 */
         }
 
         .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
-            aspect-ratio: 16 / 9;
+            height: 100%;
+            border: none;
         }
 
         .close-video {
@@ -177,7 +189,7 @@
 
             .left-column {
                 width: 100%;
-                background-image: none; /* Oculta la imagen */
+                background-image: none;
             }
 
             .right-column {
@@ -198,8 +210,8 @@
                 font-size: 18px;
             }
 
-            .video-container iframe {
-                aspect-ratio: 16 / 9;
+            .video-container {
+                width: 100%;
             }
         }
     </style>
@@ -219,6 +231,18 @@
         <div class="right-column">
             <div class="form-container">
                 <a href="https://www.mibuendil.com/" class="demo-button">Revisa nuestra demo</a>
+                <div class="form-title">
+                    <h2>Regístrate para mayor información y obtener beneficios</h2>
+                </div>
+                <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSdgHVbrqVDRjkrPVtP_q22snwiRSP-TUXd7AaUFTqEpnkNHHA/formResponse" method="POST" target="hidden_iframe" onsubmit="showConfirmationMessage(event)">
+                    <input type="text" name="entry.1496605418" placeholder="Tu nombre" required>
+                    <input type="text" name="entry.1208703638" placeholder="Nombre de tu negocio" required>
+                    <input type="text" name="entry.409755501" placeholder="Celular" required>
+                    <input type="email" name="entry.65505707" placeholder="Correo Electrónico" required>
+                    <button type="submit">Enviar</button>
+                </form>
+                <iframe name="hidden_iframe" style="display:none;"></iframe>
+                <p class="confirmation-message" id="confirmationMessage">¡Gracias por registrarte! Nos pondremos en contacto contigo pronto.</p>
             </div>
         </div>
     </div>
@@ -226,11 +250,24 @@
     <div id="videoPopup" class="video-popup">
         <div class="video-container">
             <button class="close-video" onclick="closeVideo()">×</button>
-            <iframe id="youtubeVideo" src="https://www.youtube.com/embed/dSDPTrKegNs?autoplay=1&controls=1&rel=0&showinfo=0" frameborder="0" allowfullscreen></iframe>
+            <iframe
+                id="youtubeVideo"
+                src="https://www.youtube.com/embed/dSDPTrKegNs?autoplay=1&controls=1&rel=0&showinfo=0"
+                allowfullscreen>
+            </iframe>
         </div>
     </div>
 
     <script>
+        function showConfirmationMessage(event) {
+            event.preventDefault();
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.style.display = 'block';
+            setTimeout(() => {
+                event.target.submit();
+            }, 2000);
+        }
+
         function openVideo() {
             const popup = document.getElementById('videoPopup');
             popup.style.display = 'flex';
@@ -240,12 +277,9 @@
             const popup = document.getElementById('videoPopup');
             popup.style.display = 'none';
             const iframe = document.getElementById('youtubeVideo');
-            iframe.src = iframe.src; // Reinicia el video
+            iframe.src = iframe.src;
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            openVideo();
-        });
     </script>
 </body>
 </html>
+
