@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiBuendil Landing Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -125,6 +126,12 @@
             font-size: 18px;
         }
 
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
         .video-popup {
             display: none;
             position: fixed;
@@ -136,30 +143,22 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
         }
 
         .video-container {
             position: relative;
-            width: 100%; /* Ocupa el 100% del ancho del dispositivo */
-            max-width: 1280px; /* Ancho máximo en pantallas grandes */
-            height: 0;
-            padding-top: 56.25%; /* Proporción 16:9 */
+            width: 90%;
+            max-width: 1280px;
+            aspect-ratio: 16 / 9;
             background: #000;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
         }
 
         .close-video {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: -40px;
+            right: 0;
             width: 40px;
             height: 40px;
             background-color: #E6B54A;
@@ -179,17 +178,53 @@
         }
 
         @media screen and (max-width: 768px) {
-            .video-container {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-column {
                 width: 100%;
-                max-width: none;
-                padding-top: 56.25%; /* Mantiene proporción 16:9 */
+                background-image: none; /* Oculta la imagen */
+            }
+
+            .right-column {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+                text-align: center;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+
+            .demo-button {
+                width: 100%;
+                font-size: 18px;
+            }
+
+            .video-container {
+                width: 90%;
+                max-width: 320px;
+                aspect-ratio: 16 / 9; /* Mantiene la proporción del video */
             }
         }
 
         @media screen and (max-width: 480px) {
+            .form-container h2 {
+                font-size: 24px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+
             .video-container {
+                max-width: 280px;
                 width: 100%;
-                padding-top: 56.25%;
+                aspect-ratio: 16 / 9;
             }
         }
     </style>
@@ -228,34 +263,64 @@
     <div id="videoPopup" class="video-popup">
         <div class="video-container">
             <button class="close-video" onclick="closeVideo()">×</button>
-            <iframe
-                id="youtubeVideo"
-                src="https://www.youtube.com/embed/dSDPTrKegNs?autoplay=1&controls=1&rel=0&showinfo=0"
-                allowfullscreen>
-            </iframe>
+            <div id="youtubeVideo"></div>
         </div>
     </div>
 
-    <button onclick="openVideo()" style="margin: 20px; padding: 10px 20px; background-color: #E6B54A; color: white; border: none; border-radius: 5px; cursor: pointer;">
-        Abrir Video
-    </button>
-
     <script>
-        function openVideo() {
-            const popup = document.getElementById('videoPopup');
-            popup.style.display = 'flex';
+        function showConfirmationMessage(event) {
+            event.preventDefault();
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.style.display = 'block';
+            setTimeout(() => {
+                event.target.submit();
+            }, 2000);
+        }
+
+        function loadYouTubeAPI() {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        let player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtubeVideo', {
+                height: '720',
+                width: '1280',
+                videoId: 'dSDPTrKegNs',
+                playerVars: {
+                    autoplay: 1,
+                    controls: 1,
+                    rel: 0,
+                    showinfo: 0,
+                    mute: 0
+                },
+                events: {
+                    onReady: onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            setTimeout(() => {
+                document.getElementById('videoPopup').style.display = 'flex';
+                event.target.playVideo();
+            }, 1000);
         }
 
         function closeVideo() {
             const popup = document.getElementById('videoPopup');
             popup.style.display = 'none';
-
-            // Reinicia el video
-            const iframe = document.getElementById('youtubeVideo');
-            iframe.src = iframe.src;
+            if (player && typeof player.stopVideo === 'function') {
+                player.stopVideo();
+            }
         }
+
+        loadYouTubeAPI();
     </script>
 </body>
 </html>
-
 
