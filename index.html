@@ -4,6 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiBuendil Landing Page</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZJHGF768M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-GZJHGF768M', {
+            'page_title': 'MiBuendil Landing',
+            'custom_map': {
+                'dimension1': 'form_submissions',
+                'dimension2': 'video_views'
+            }
+        });
+
+        // Función para trackear envío de formulario
+        function trackFormSubmission() {
+            gtag('event', 'form_submission', {
+                'event_category': 'engagement',
+                'event_label': 'landing_form'
+            });
+        }
+
+        // Función para trackear reproducción de video
+        function trackVideoPlay() {
+            gtag('event', 'video_play', {
+                'event_category': 'engagement',
+                'event_label': 'youtube_video'
+            });
+        }
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -265,7 +298,7 @@
 
         <div class="right-column">
             <div class="form-container">
-                <a href="https://www.mibuendil.com/" class="demo-button">Revisa nuestra demo</a>
+                <a href="https://www.mibuendil.com/" class="demo-button" onclick="trackDemoClick()">Revisa nuestra demo</a>
                 <div class="form-title">
                     <h2>Regístrate para mayor información y obtener beneficios</h2>
                 </div>
@@ -290,10 +323,19 @@
     </div>
 
     <script>
+        // Trackear clic en el botón de demo
+        function trackDemoClick() {
+            gtag('event', 'demo_click', {
+                'event_category': 'engagement',
+                'event_label': 'demo_button'
+            });
+        }
+
         function showConfirmationMessage(event) {
             event.preventDefault();
             const confirmationMessage = document.getElementById('confirmationMessage');
             confirmationMessage.style.display = 'block';
+            trackFormSubmission();
             setTimeout(() => {
                 event.target.submit();
             }, 2000);
@@ -322,7 +364,8 @@
                     playsinline: 1
                 },
                 events: {
-                    onReady: onPlayerReady
+                    onReady: onPlayerReady,
+                    onStateChange: onPlayerStateChange
                 }
             });
         }
@@ -332,6 +375,12 @@
                 document.getElementById('videoPopup').style.display = 'flex';
                 event.target.playVideo();
             }, 1000);
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.PLAYING) {
+                trackVideoPlay();
+            }
         }
 
         function closeVideo() {
