@@ -118,20 +118,6 @@
             background-color: #d0a04a;
         }
 
-        .confirmation-message {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            color: #FFFFFF;
-            font-size: 18px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-
         .video-popup {
             display: none;
             position: fixed;
@@ -151,14 +137,21 @@
             position: relative;
             width: 90%;
             max-width: 1280px;
-            aspect-ratio: 16 / 9;
             background: #000;
+            display: flex;
+            justify-content: center;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16 / 9;
         }
 
         .close-video {
             position: absolute;
-            top: -40px;
-            right: 0;
+            top: 20px;
+            right: 20px;
             width: 40px;
             height: 40px;
             background-color: #E6B54A;
@@ -205,26 +198,7 @@
                 font-size: 18px;
             }
 
-            .video-container {
-                width: 90%;
-                height: auto;
-                aspect-ratio: 16 / 9;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .form-container h2 {
-                font-size: 24px;
-            }
-
-            .hero h1 {
-                font-size: 24px;
-            }
-
-            .video-container {
-                max-width: 100%;
-                width: 100%;
-                height: auto;
+            .video-container iframe {
                 aspect-ratio: 16 / 9;
             }
         }
@@ -245,18 +219,6 @@
         <div class="right-column">
             <div class="form-container">
                 <a href="https://www.mibuendil.com/" class="demo-button">Revisa nuestra demo</a>
-                <div class="form-title">
-                    <h2>Regístrate para mayor información y obtener beneficios</h2>
-                </div>
-                <form action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSdgHVbrqVDRjkrPVtP_q22snwiRSP-TUXd7AaUFTqEpnkNHHA/formResponse" method="POST" target="hidden_iframe" onsubmit="showConfirmationMessage(event)">
-                    <input type="text" name="entry.1496605418" placeholder="Tu nombre" required>
-                    <input type="text" name="entry.1208703638" placeholder="Nombre de tu negocio" required>
-                    <input type="text" name="entry.409755501" placeholder="Celular" required>
-                    <input type="email" name="entry.65505707" placeholder="Correo Electrónico" required>
-                    <button type="submit">Enviar</button>
-                </form>
-                <iframe name="hidden_iframe" style="display:none;"></iframe>
-                <p class="confirmation-message" id="confirmationMessage">¡Gracias por registrarte! Nos pondremos en contacto contigo pronto.</p>
             </div>
         </div>
     </div>
@@ -264,63 +226,26 @@
     <div id="videoPopup" class="video-popup">
         <div class="video-container">
             <button class="close-video" onclick="closeVideo()">×</button>
-            <div id="youtubeVideo"></div>
+            <iframe id="youtubeVideo" src="https://www.youtube.com/embed/dSDPTrKegNs?autoplay=1&controls=1&rel=0&showinfo=0" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 
     <script>
-        function showConfirmationMessage(event) {
-            event.preventDefault();
-            const confirmationMessage = document.getElementById('confirmationMessage');
-            confirmationMessage.style.display = 'block';
-            setTimeout(() => {
-                event.target.submit();
-            }, 2000);
-        }
-
-        function loadYouTubeAPI() {
-            const tag = document.createElement('script');
-            tag.src = 'https://www.youtube.com/iframe_api';
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        }
-
-        let player;
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtubeVideo', {
-                height: '720',
-                width: '1280',
-                videoId: 'dSDPTrKegNs',
-                playerVars: {
-                    autoplay: 1,
-                    controls: 1,
-                    rel: 0,
-                    showinfo: 0,
-                    mute: 0
-                },
-                events: {
-                    onReady: onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            setTimeout(() => {
-                document.getElementById('videoPopup').style.display = 'flex';
-                event.target.playVideo();
-            }, 1000);
+        function openVideo() {
+            const popup = document.getElementById('videoPopup');
+            popup.style.display = 'flex';
         }
 
         function closeVideo() {
             const popup = document.getElementById('videoPopup');
             popup.style.display = 'none';
-            if (player && typeof player.stopVideo === 'function') {
-                player.stopVideo();
-            }
+            const iframe = document.getElementById('youtubeVideo');
+            iframe.src = iframe.src; // Reinicia el video
         }
 
-        loadYouTubeAPI();
+        document.addEventListener('DOMContentLoaded', () => {
+            openVideo();
+        });
     </script>
 </body>
 </html>
