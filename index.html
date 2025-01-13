@@ -149,19 +149,10 @@
 
         .video-container {
             position: relative;
-            width: 100%;
+            width: 90%;
             max-width: 1280px;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
+            aspect-ratio: 16 / 9;
             background: #000;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
         }
 
         .close-video {
@@ -215,8 +206,9 @@
             }
 
             .video-container {
-                width: 50%;
-                padding-bottom: 56.25%; /* Mantiene la proporción del video */
+                width: 90%;
+                max-width: 320px;
+                aspect-ratio: 16 / 9; /* Mantiene la proporción del video */
             }
         }
 
@@ -230,8 +222,9 @@
             }
 
             .video-container {
-                width: 50%;
-                padding-bottom: 56.25%; /* Mantiene la proporción del video */
+                max-width: 280px;
+                width: 100%;
+                aspect-ratio: 16 / 9;
             }
         }
     </style>
@@ -309,3 +302,24 @@
                     onReady: onPlayerReady
                 }
             });
+        }
+
+        function onPlayerReady(event) {
+            setTimeout(() => {
+                document.getElementById('videoPopup').style.display = 'flex';
+                event.target.playVideo();
+            }, 1000);
+        }
+
+        function closeVideo() {
+            const popup = document.getElementById('videoPopup');
+            popup.style.display = 'none';
+            if (player && typeof player.stopVideo === 'function') {
+                player.stopVideo();
+            }
+        }
+
+        loadYouTubeAPI();
+    </script>
+</body>
+</html>
